@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>主題抽選</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Courier New", monospace;
+    background: #111;
+    color: white;
+  }
+
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background:
+      linear-gradient(rgba(0,0,0,0.08), rgba(0,0,0,0.42)),
+      url("image.png") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 天花板 */
+  /* 霧氣 */
+  .mist {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, transparent 35%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+  }
+
+  .top-text {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    text-shadow: 2px 2px 0 #000;
+  }
+
+  .portal {
+    position: relative;
+    width: 260px;
+    height: 380px;
+    border-radius: 50%;
+    background: white;
+    box-shadow:
+      0 0 35px white,
+      0 0 80px rgba(255,255,255,0.9),
+      0 0 130px rgba(255,255,255,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: float 2.8s ease-in-out infinite, glow 1.8s infinite alternate;
+    z-index: 5;
+  }
+
+  .portal:hover {
+    transform: scale(1.04);
+  }
+
+  .portal span {
+    font-size: 86px;
+    color: red;
+    text-shadow: 3px 3px 0 #fff, 5px 5px 0 #999;
+    font-weight: bold;
+  }
+
+  @keyframes float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -10px; }
+  }
+
+  @keyframes glow {
+    from {
+      filter: blur(0px);
+    }
+    to {
+      filter: blur(1.5px);
+    }
+  }
+
+  .dialogue {
+    position: absolute;
+    left: 50%;
+    bottom: 42px;
+    transform: translateX(-50%);
+    width: min(90%, 900px);
+    min-height: 110px;
+    background: #050505;
+    border: 4px solid white;
+    outline: 3px solid #333;
+    padding: 24px 28px;
+    z-index: 10;
+    box-shadow: 0 0 0 4px black;
+  }
+
+  .name {
+    position: absolute;
+    top: -36px;
+    left: -4px;
+    background: #555;
+    border: 3px solid white;
+    padding: 4px 16px;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .text {
+    font-size: clamp(24px, 4vw, 42px);
+    line-height: 1.3;
+    text-shadow: 3px 3px 0 #333;
+  }
+
+  .arrow {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    color: yellow;
+    font-size: 28px;
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .topic {
+    color: #ffef4a;
+  }
+
+  .noise {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.04) 0px,
+        rgba(255,255,255,0.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 20;
+  }
+</style>
+</head>
+
+<body>
+  <div class="scene">
+    <div class="mist"></div>
+
+    <div class="top-text">the one who remembers this dream...</div>
+    <div class="portal" onclick="drawTopic()">
+      <span>?</span>
+    </div>
+
+    <div class="dialogue">
+      <div class="name">THEME</div>
+      <div class="text" id="dialogueText">Click the question mark...</div>
+      <div class="arrow">▶</div>
+    </div>
+
+    <div class="noise"></div>
+  </div>
+
+<script>
+  const topics = [
+    "人際關係",
+    "壓力",
+    "AI",
+    "遊戲",
+    "畢業後",
+    "音樂"
+  ];
+
+  const dialogueText = document.getElementById("dialogueText");
+
+  function drawTopic() {
+    const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+    dialogueText.innerHTML = `你的主題是：<span class="topic">${randomTopic}</span>`;
+  }
+</script>
+</body>
+</html>
