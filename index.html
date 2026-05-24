@@ -68,15 +68,28 @@
     z-index: 5;
   }
 
+  .portal.is-showing-topic {
+    cursor: default;
+  }
+
   .portal:hover {
     transform: scale(1.04);
   }
 
   .portal span {
+    width: 82%;
+    padding: 0 16px;
     font-size: 86px;
     color: red;
     text-shadow: 3px 3px 0 #fff, 5px 5px 0 #999;
     font-weight: bold;
+    line-height: 1.08;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .portal.is-showing-topic span {
+    font-size: clamp(32px, 5vw, 58px);
   }
 
   @keyframes float {
@@ -166,8 +179,8 @@
     <div class="mist"></div>
 
     <div class="top-text">the one who remembers this dream...</div>
-    <div class="portal" onclick="drawTopic()">
-      <span>?</span>
+    <div class="portal" id="portal" onclick="drawTopic()">
+      <span id="portalText">?</span>
     </div>
 
     <div class="dialogue">
@@ -189,11 +202,25 @@
     "音樂"
   ];
 
+  const portal = document.getElementById("portal");
+  const portalText = document.getElementById("portalText");
   const dialogueText = document.getElementById("dialogueText");
+  let resetTimer = null;
 
   function drawTopic() {
+    if (resetTimer) return;
+
     const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+    portalText.textContent = randomTopic;
+    portal.classList.add("is-showing-topic");
     dialogueText.innerHTML = `你的主題是：<span class="topic">${randomTopic}</span>`;
+
+    resetTimer = setTimeout(() => {
+      portalText.textContent = "?";
+      portal.classList.remove("is-showing-topic");
+      dialogueText.textContent = "Click the question mark...";
+      resetTimer = null;
+    }, 10000);
   }
 </script>
 </body>
